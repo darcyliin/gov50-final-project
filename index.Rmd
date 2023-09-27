@@ -11,4 +11,7 @@ output:
 
 ## Project thoughts
 
-I am interested in exploring data related to the gerontocracy.   
+I am interested in exploring data related to the gerontocracy. I would potentially explore the following questions:
+- How does the average age of civil servant in the executive, legislative, and judicial branch of the United States government compare?
+- How does the average age of civil servant compare to newly elected / incumbent? 
+- (Correlative relationship) How do the approval ratings of civil servants compare with ages of civil servants over time? 

@@ -11,4 +11,4 @@ output:
 
 ## Project thoughts
 
-I am interested in exploring data related to the gerontocracy.  
+I am interested in exploring data related to the gerontocracy.   

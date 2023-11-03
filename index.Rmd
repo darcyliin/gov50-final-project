@@ -31,7 +31,7 @@ gov50ads |>
     title = "Proportion of Pro-Campaign Ads Run from Oct 2015 - Dec 2016",
     y = "Proportion",
     x = "Candidate")
-  
+   
 ```
 
 ## Proposal

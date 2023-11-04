@@ -7,16 +7,16 @@ output:
     self_contained: false
 ---
 
-```{r}
+```{r someVar, echo=FALSE}
 library(tidyverse)
 library(dplyr)
 ```
 
-```{r}
+```{r someVar, echo=FALSE}
 gov50ads <- read_csv("2016ads.csv")
 View(gov50ads)
 ```
-```{r}
+```{r someVar, echo=FALSE}
 gov50ads |> 
   filter(message == "pro") |>
   group_by(candidates) |>

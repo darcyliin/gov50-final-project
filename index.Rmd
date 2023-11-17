@@ -7,16 +7,34 @@ output:
     self_contained: false
 ---
 
-```{r someVar, echo=FALSE}
+##Proposal 
+Does increasing campaign ads increase election results? In this study, I plan to examine the extent to which campaign ads can predict the 2016 election outcome. I hypothesize that, in general, an increase in campaign ads will be a strong predictor for how well a candidate does in that area.
+
+My sample is composed of two sources. The first source is pulled from Political TV Ad Archive and is comprised of campaign ads from the primary period through the 2016 election in regions across the United States. The second source is final election results compiled from various Green Pages for the corresponding districts. The data set is sorted to only include pro-presidential campaign. 
+
+The explanatory variable is proportion of Hillary Clinton campaign ads in a region. The outcome variable is the proportion of the vote that Hillary Clinton won. 
+
+If I observe a strong correlation between campaign ads and election results, I will have support for my hypothesis. 
+
+##Final Milestone 3 
+
+```{r}
 library(tidyverse)
 library(dplyr)
 ```
 
-```{r someVar, echo=FALSE}
+```{r}
 gov50ads <- read_csv("2016ads.csv")
 View(gov50ads)
+
+presidential <- read_csv("gov50presidential.csv")
+View(presidential)
+
+presidential <- presidential |> 
+  rename("state" = "...1")
 ```
-```{r someVar, echo=FALSE}
+
+```{r}
 gov50ads |> 
   filter(message == "pro") |>
   group_by(candidates) |>
@@ -34,12 +52,56 @@ gov50ads |>
    
 ```
 
-## Proposal
-Can tweets predict hate crimes? In this study, I plan to examine the extent to which hateful geo-tagged tweets can predict hate crimes. I hypothesize that, in general, hateful tweets will be a good predictor for hate crimes but that effects will vary based on how wealthy an area is. In poorer areas, I hypothesize that hateful tweets will be a better predictor than richer areas. My sample is composed of tweets and hate crimes in LA between September 2017 and September 2018. The explanatory variable is hateful tweets targeting certain characteristics in a particular geographic region. The data set has already sorted the tweets to identify racially, religiously, and sexually hateful tweets. My outcome variable is the number of hate crimes for a particular characteristic. The data set has already sorted hate crimes to identify racially, religiously, and sexual motivation. If I observe a strong correlation between hate crimes and tweets in a geographic region, I would have support for my hypothesis. If this correlation is greater in areas that are poorer than the richer areas, II will have support for the latter half of my hypothesis.
+##Final Milestone 4
+```{r}
+loc_govads <- gov50ads |>
+  filter(location != "Greenville-Spartanburg, SC/Asheville-Anderson, NC",
+         location != "Washington, DC/Hagerstown, MD",
+         location != "Boston, MA/Manchester, NH") |>
+  mutate(state = case_when(
+    location == "Las Vegas, NV" ~ "NV",
+    location == "Tampa-St. Petersburg, FL" | location == "Orlando-Daytona Beach-Melbourne, FL" | location == "Miami-Fort Lauderdale, FL" ~ "FL",
+    location == "Denver, CO" | location == "Colorado Springs-Pueblo, CO" ~ "CO",
+    location == "Ceder Rapids-Waterloo-Iowa City-Dublin, Iowa" | location == "Sioux City, Iowa" | location == "Des Moines-Ames, Iowa" ~ "IA",
+    location == "Charlotte, NC" | location == "Raleigh-Durham-Fayetteville,  NC" | location == "Norfolk-Portsmouth-Newport News, NC" ~ "NC",
+    location == "Cincinnati, OH" | location == "Cleveland, Ohio" ~ "OH",
+    location == "Columbia, SC" ~ "SC",
+    location == "Milwaukee, WI" ~ "WI",
+    location == "New York City, NY" ~ "NY",
+    location == "Philadelphia, PA" ~ "PA",
+    location == "Phoenix-Prescott, AZ" ~ "AZ",
+    location == "Reno, NV" ~ "NV",
+    location == "Roanoke-Lynchburg, VA" ~ "VA",
+    location == "San Francisco-Oakland-San Jose, CA" ~ "CA"
+      )) |>
+  filter(race == "PRES",
+         message == "pro")
+```
 
-## Project thoughts
+```{r}
+join_ads <- loc_govads |> 
+  group_by(state) |> 
+  mutate(Hillary = if_else(candidates == "Hillary Clinton", "1", "0"),
+         Hillary = as.numeric(Hillary)) |> 
+  summarize(prop_Hillary = mean(Hillary)) |> 
+  left_join(presidential, by = "state") |>
+  select(!c(...2,...3,Trump,Other)) |>
+  mutate(`Hillary Clinton` = `Hillary Clinton`/100)
+```
 
-I am interested in exploring data related to the gerontocracy. I would potentially explore the following questions:
-- How does the average age of civil servant in the executive, legislative, and judicial branch of the United States government compare?
-- How does the average age of civil servant compare to newly elected / incumbent? 
-- (Correlative relationship) How do the approval ratings of civil servants compare with ages of civil servants over time?  
+```{r}
+join_ads |> 
+  ggplot(mapping = aes(x = prop_Hillary,
+                       y = `Hillary Clinton`)) + 
+  geom_point(alpha = 0.5) + 
+  geom_smooth(method = "lm") + 
+  labs(title = "Hillary Clinton 2016 Presidential Campaign Videos vs Election Results",
+       y = "Clinton Proportion of 2016 Presidential Election",
+       x = "Clinton Proportion of Campaign Videos", 
+       subtitle = "Campaign Ad Info from Political TV Ad Archive, Election Results Compiled from the Green Pages")
+```
+```{r}
+join_ads |>
+  lm(formula = `Hillary Clinton` ~ prop_Hillary)
+```
+Positive correlation between increase of Hillary campaign ads and election results. 

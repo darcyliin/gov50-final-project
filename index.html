@@ -115,7 +115,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   <!--/radix_placeholder_rmarkdown_metadata-->
   
   <script type="text/json" id="radix-resource-manifest">
-  {"type":"character","attributes":{},"value":["2016ads.csv","index_files/anchor-4.2.2/anchor.min.js","index_files/bowser-1.9.3/bowser.min.js","index_files/distill-2.2.21/template.v2.js","index_files/figure-html5/unnamed-chunk-3-1.png","index_files/header-attrs-2.17/header-attrs.js","index_files/header-attrs-2.25/header-attrs.js","index_files/jquery-3.6.0/jquery-3.6.0.js","index_files/jquery-3.6.0/jquery-3.6.0.min.js","index_files/jquery-3.6.0/jquery-3.6.0.min.map","index_files/popper-2.6.0/popper.min.js","index_files/tippy-6.2.7/tippy-bundle.umd.min.js","index_files/tippy-6.2.7/tippy-light-border.css","index_files/tippy-6.2.7/tippy.css","index_files/tippy-6.2.7/tippy.umd.min.js","index_files/webcomponents-2.0.0/webcomponents.js"]}
+  {"type":"character","attributes":{},"value":["2016ads.csv","gov50presidential.csv","index_files/anchor-4.2.2/anchor.min.js","index_files/bowser-1.9.3/bowser.min.js","index_files/distill-2.2.21/template.v2.js","index_files/figure-html5/unnamed-chunk-3-1.png","index_files/figure-html5/unnamed-chunk-6-1.png","index_files/header-attrs-2.17/header-attrs.js","index_files/header-attrs-2.25/header-attrs.js","index_files/jquery-3.6.0/jquery-3.6.0.js","index_files/jquery-3.6.0/jquery-3.6.0.min.js","index_files/jquery-3.6.0/jquery-3.6.0.min.map","index_files/popper-2.6.0/popper.min.js","index_files/tippy-6.2.7/tippy-bundle.umd.min.js","index_files/tippy-6.2.7/tippy-light-border.css","index_files/tippy-6.2.7/tippy.css","index_files/tippy-6.2.7/tippy.umd.min.js","index_files/webcomponents-2.0.0/webcomponents.js"]}
   </script>
   <!--radix_placeholder_navigation_in_header-->
   <!--/radix_placeholder_navigation_in_header-->
@@ -227,9 +227,21 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
     display: none !important;
   }
 
+  hr.section-separator {
+    border: none;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    margin: 0px;
+  }
+
+
+  d-byline {
+    border-top: none;
+  }
+
   d-article {
     padding-top: 2.5rem;
     padding-bottom: 30px;
+    border-top: none;
   }
 
   d-appendix {
@@ -324,6 +336,11 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   d-article div.sourceCode pre {
     padding-left: 18px;
     font-size: 14px;
+  }
+
+  /* tweak for Pandoc numbered line within distill */
+  d-article pre.numberSource code > span {
+      left: -2em;
   }
 
   d-article pre {
@@ -1085,6 +1102,12 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
     // create d-title
     $('.d-title').changeElementType('d-title');
 
+    // separator
+    var separator = '<hr class="section-separator" style="clear: both"/>';
+    // prepend separator above appendix
+    $('.d-byline').before(separator);
+    $('.d-article').before(separator);
+
     // create d-byline
     var byline = $('<d-byline></d-byline>');
     $('.d-byline').replaceWith(byline);
@@ -1162,8 +1185,9 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
     $('.distill-force-highlighting-css').parent().remove();
 
     // remove empty line numbers inserted by pandoc when using a
-    // custom syntax highlighting theme
-    $('code.sourceCode a:empty').remove();
+    // custom syntax highlighting theme, except when numbering line
+    // in code chunk
+    $('pre:not(.numberLines) code.sourceCode a:empty').remove();
 
     // load distill framework
     load_distill_framework();
@@ -1189,12 +1213,13 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
       // add orcid ids
       $('.authors-affiliations').find('.author').each(function(i, el) {
         var orcid_id = front_matter.authors[i].orcidID;
+        var author_name = front_matter.authors[i].author
         if (orcid_id) {
           var a = $('<a></a>');
           a.attr('href', 'https://orcid.org/' + orcid_id);
           var img = $('<img></img>');
           img.addClass('orcid-id');
-          img.attr('alt', 'ORCID ID');
+          img.attr('alt', author_name ? 'ORCID ID for ' + author_name : 'ORCID ID');
           img.attr('src','data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2ZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo1N0NEMjA4MDI1MjA2ODExOTk0QzkzNTEzRjZEQTg1NyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDozM0NDOEJGNEZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDozM0NDOEJGM0ZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1IE1hY2ludG9zaCI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkZDN0YxMTc0MDcyMDY4MTE5NUZFRDc5MUM2MUUwNEREIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjU3Q0QyMDgwMjUyMDY4MTE5OTRDOTM1MTNGNkRBODU3Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+84NovQAAAR1JREFUeNpiZEADy85ZJgCpeCB2QJM6AMQLo4yOL0AWZETSqACk1gOxAQN+cAGIA4EGPQBxmJA0nwdpjjQ8xqArmczw5tMHXAaALDgP1QMxAGqzAAPxQACqh4ER6uf5MBlkm0X4EGayMfMw/Pr7Bd2gRBZogMFBrv01hisv5jLsv9nLAPIOMnjy8RDDyYctyAbFM2EJbRQw+aAWw/LzVgx7b+cwCHKqMhjJFCBLOzAR6+lXX84xnHjYyqAo5IUizkRCwIENQQckGSDGY4TVgAPEaraQr2a4/24bSuoExcJCfAEJihXkWDj3ZAKy9EJGaEo8T0QSxkjSwORsCAuDQCD+QILmD1A9kECEZgxDaEZhICIzGcIyEyOl2RkgwAAhkmC+eAm0TAAAAABJRU5ErkJggg==');
           a.append(img);
           $(this).append(a);
@@ -1504,6 +1529,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 
 <div class="d-title">
 <h1>Gov 50 Final Project</h1>
+
 <!--radix_placeholder_categories-->
 <!--/radix_placeholder_categories-->
 <p>My final project</p>
@@ -1517,6 +1543,12 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 </div>
 
 <div class="d-article">
+<p>##Proposal
+Does increasing campaign ads increase election results? In this study, I plan to examine the extent to which campaign ads can predict the 2016 election outcome. I hypothesize that, in general, an increase in campaign ads will be a strong predictor for how well a candidate does in that area.</p>
+<p>My sample is composed of two sources. The first source is pulled from Political TV Ad Archive and is comprised of campaign ads from the primary period through the 2016 election in regions across the United States. The second source is final election results compiled from various Green Pages for the corresponding districts. The data set is sorted to only include pro-presidential campaign.</p>
+<p>The explanatory variable is proportion of Hillary Clinton campaign ads in a region. The outcome variable is the proportion of the vote that Hillary Clinton won.</p>
+<p>If I observe a strong correlation between campaign ads and election results, I will have support for my hypothesis.</p>
+<p>##Final Milestone 3</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://tidyverse.tidyverse.org'>tidyverse</a></span><span class='op'>)</span></span>
@@ -1526,7 +1558,13 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>gov50ads</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://readr.tidyverse.org/reference/read_delim.html'>read_csv</a></span><span class='op'>(</span><span class='st'>"2016ads.csv"</span><span class='op'>)</span></span>
-<span><span class='fu'><a href='https://rdrr.io/r/utils/View.html'>View</a></span><span class='op'>(</span><span class='va'>gov50ads</span><span class='op'>)</span></span></code></pre>
+<span><span class='fu'><a href='https://rdrr.io/r/utils/View.html'>View</a></span><span class='op'>(</span><span class='va'>gov50ads</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='va'>presidential</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://readr.tidyverse.org/reference/read_delim.html'>read_csv</a></span><span class='op'>(</span><span class='st'>"gov50presidential.csv"</span><span class='op'>)</span></span>
+<span><span class='fu'><a href='https://rdrr.io/r/utils/View.html'>View</a></span><span class='op'>(</span><span class='va'>presidential</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='va'>presidential</span> <span class='op'>&lt;-</span> <span class='va'>presidential</span> <span class='op'>|&gt;</span> </span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/rename.html'>rename</a></span><span class='op'>(</span><span class='st'>"state"</span> <span class='op'>=</span> <span class='st'>"...1"</span><span class='op'>)</span></span></code></pre>
 </div>
 </div>
 <div class="layout-chunk" data-layout="l-body">
@@ -1548,14 +1586,74 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 </div>
 <p><img src="index_files/figure-html5/unnamed-chunk-3-1.png" width="624" /></p>
 </div>
-<h2 id="proposal">Proposal</h2>
-<p>Can tweets predict hate crimes? In this study, I plan to examine the extent to which hateful geo-tagged tweets can predict hate crimes. I hypothesize that, in general, hateful tweets will be a good predictor for hate crimes but that effects will vary based on how wealthy an area is. In poorer areas, I hypothesize that hateful tweets will be a better predictor than richer areas. My sample is composed of tweets and hate crimes in LA between September 2017 and September 2018. The explanatory variable is hateful tweets targeting certain characteristics in a particular geographic region. The data set has already sorted the tweets to identify racially, religiously, and sexually hateful tweets. My outcome variable is the number of hate crimes for a particular characteristic. The data set has already sorted hate crimes to identify racially, religiously, and sexual motivation. If I observe a strong correlation between hate crimes and tweets in a geographic region, I would have support for my hypothesis. If this correlation is greater in areas that are poorer than the richer areas, II will have support for the latter half of my hypothesis.</p>
-<h2 id="project-thoughts">Project thoughts</h2>
-<p>I am interested in exploring data related to the gerontocracy. I would potentially explore the following questions:
-- How does the average age of civil servant in the executive, legislative, and judicial branch of the United States government compare?
-- How does the average age of civil servant compare to newly elected / incumbent?
-- (Correlative relationship) How do the approval ratings of civil servants compare with ages of civil servants over time?</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
+##Final Milestone 4
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>loc_govads</span> <span class='op'>&lt;-</span> <span class='va'>gov50ads</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>location</span> <span class='op'>!=</span> <span class='st'>"Greenville-Spartanburg, SC/Asheville-Anderson, NC"</span>,</span>
+<span>         <span class='va'>location</span> <span class='op'>!=</span> <span class='st'>"Washington, DC/Hagerstown, MD"</span>,</span>
+<span>         <span class='va'>location</span> <span class='op'>!=</span> <span class='st'>"Boston, MA/Manchester, NH"</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>state <span class='op'>=</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/case_when.html'>case_when</a></span><span class='op'>(</span></span>
+<span>    <span class='va'>location</span> <span class='op'>==</span> <span class='st'>"Las Vegas, NV"</span> <span class='op'>~</span> <span class='st'>"NV"</span>,</span>
+<span>    <span class='va'>location</span> <span class='op'>==</span> <span class='st'>"Tampa-St. Petersburg, FL"</span> <span class='op'>|</span> <span class='va'>location</span> <span class='op'>==</span> <span class='st'>"Orlando-Daytona Beach-Melbourne, FL"</span> <span class='op'>|</span> <span class='va'>location</span> <span class='op'>==</span> <span class='st'>"Miami-Fort Lauderdale, FL"</span> <span class='op'>~</span> <span class='st'>"FL"</span>,</span>
+<span>    <span class='va'>location</span> <span class='op'>==</span> <span class='st'>"Denver, CO"</span> <span class='op'>|</span> <span class='va'>location</span> <span class='op'>==</span> <span class='st'>"Colorado Springs-Pueblo, CO"</span> <span class='op'>~</span> <span class='st'>"CO"</span>,</span>
+<span>    <span class='va'>location</span> <span class='op'>==</span> <span class='st'>"Ceder Rapids-Waterloo-Iowa City-Dublin, Iowa"</span> <span class='op'>|</span> <span class='va'>location</span> <span class='op'>==</span> <span class='st'>"Sioux City, Iowa"</span> <span class='op'>|</span> <span class='va'>location</span> <span class='op'>==</span> <span class='st'>"Des Moines-Ames, Iowa"</span> <span class='op'>~</span> <span class='st'>"IA"</span>,</span>
+<span>    <span class='va'>location</span> <span class='op'>==</span> <span class='st'>"Charlotte, NC"</span> <span class='op'>|</span> <span class='va'>location</span> <span class='op'>==</span> <span class='st'>"Raleigh-Durham-Fayetteville,  NC"</span> <span class='op'>|</span> <span class='va'>location</span> <span class='op'>==</span> <span class='st'>"Norfolk-Portsmouth-Newport News, NC"</span> <span class='op'>~</span> <span class='st'>"NC"</span>,</span>
+<span>    <span class='va'>location</span> <span class='op'>==</span> <span class='st'>"Cincinnati, OH"</span> <span class='op'>|</span> <span class='va'>location</span> <span class='op'>==</span> <span class='st'>"Cleveland, Ohio"</span> <span class='op'>~</span> <span class='st'>"OH"</span>,</span>
+<span>    <span class='va'>location</span> <span class='op'>==</span> <span class='st'>"Columbia, SC"</span> <span class='op'>~</span> <span class='st'>"SC"</span>,</span>
+<span>    <span class='va'>location</span> <span class='op'>==</span> <span class='st'>"Milwaukee, WI"</span> <span class='op'>~</span> <span class='st'>"WI"</span>,</span>
+<span>    <span class='va'>location</span> <span class='op'>==</span> <span class='st'>"New York City, NY"</span> <span class='op'>~</span> <span class='st'>"NY"</span>,</span>
+<span>    <span class='va'>location</span> <span class='op'>==</span> <span class='st'>"Philadelphia, PA"</span> <span class='op'>~</span> <span class='st'>"PA"</span>,</span>
+<span>    <span class='va'>location</span> <span class='op'>==</span> <span class='st'>"Phoenix-Prescott, AZ"</span> <span class='op'>~</span> <span class='st'>"AZ"</span>,</span>
+<span>    <span class='va'>location</span> <span class='op'>==</span> <span class='st'>"Reno, NV"</span> <span class='op'>~</span> <span class='st'>"NV"</span>,</span>
+<span>    <span class='va'>location</span> <span class='op'>==</span> <span class='st'>"Roanoke-Lynchburg, VA"</span> <span class='op'>~</span> <span class='st'>"VA"</span>,</span>
+<span>    <span class='va'>location</span> <span class='op'>==</span> <span class='st'>"San Francisco-Oakland-San Jose, CA"</span> <span class='op'>~</span> <span class='st'>"CA"</span></span>
+<span>      <span class='op'>)</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>race</span> <span class='op'>==</span> <span class='st'>"PRES"</span>,</span>
+<span>         <span class='va'>message</span> <span class='op'>==</span> <span class='st'>"pro"</span><span class='op'>)</span></span></code></pre>
+</div>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>join_ads</span> <span class='op'>&lt;-</span> <span class='va'>loc_govads</span> <span class='op'>|&gt;</span> </span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span><span class='op'>(</span><span class='va'>state</span><span class='op'>)</span> <span class='op'>|&gt;</span> </span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>Hillary <span class='op'>=</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/if_else.html'>if_else</a></span><span class='op'>(</span><span class='va'>candidates</span> <span class='op'>==</span> <span class='st'>"Hillary Clinton"</span>, <span class='st'>"1"</span>, <span class='st'>"0"</span><span class='op'>)</span>,</span>
+<span>         Hillary <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/numeric.html'>as.numeric</a></span><span class='op'>(</span><span class='va'>Hillary</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>|&gt;</span> </span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/summarise.html'>summarize</a></span><span class='op'>(</span>prop_Hillary <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span><span class='op'>(</span><span class='va'>Hillary</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>|&gt;</span> </span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate-joins.html'>left_join</a></span><span class='op'>(</span><span class='va'>presidential</span>, by <span class='op'>=</span> <span class='st'>"state"</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='op'>!</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='va'>...2</span>,<span class='va'>...3</span>,<span class='va'>Trump</span>,<span class='va'>Other</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>`Hillary Clinton` <span class='op'>=</span> <span class='va'>`Hillary Clinton`</span><span class='op'>/</span><span class='fl'>100</span><span class='op'>)</span></span></code></pre>
+</div>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>join_ads</span> <span class='op'>|&gt;</span> </span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span><span class='op'>(</span>mapping <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>prop_Hillary</span>,</span>
+<span>                       y <span class='op'>=</span> <span class='va'>`Hillary Clinton`</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span> </span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_point.html'>geom_point</a></span><span class='op'>(</span>alpha <span class='op'>=</span> <span class='fl'>0.5</span><span class='op'>)</span> <span class='op'>+</span> </span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_smooth.html'>geom_smooth</a></span><span class='op'>(</span>method <span class='op'>=</span> <span class='st'>"lm"</span><span class='op'>)</span> <span class='op'>+</span> </span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>labs</a></span><span class='op'>(</span>title <span class='op'>=</span> <span class='st'>"Hillary Clinton 2016 Presidential Campaign Videos vs Election Results"</span>,</span>
+<span>       y <span class='op'>=</span> <span class='st'>"Clinton Proportion of 2016 Presidential Election"</span>,</span>
+<span>       x <span class='op'>=</span> <span class='st'>"Clinton Proportion of Campaign Videos"</span>, </span>
+<span>       subtitle <span class='op'>=</span> <span class='st'>"Campaign Ad Info from Political TV Ad Archive, Election Results Compiled from the Green Pages"</span><span class='op'>)</span></span></code></pre>
+</div>
+<p><img src="index_files/figure-html5/unnamed-chunk-6-1.png" width="624" /></p>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>join_ads</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'><a href='https://rdrr.io/r/stats/lm.html'>lm</a></span><span class='op'>(</span>formula <span class='op'>=</span> <span class='va'>`Hillary Clinton`</span> <span class='op'>~</span> <span class='va'>prop_Hillary</span><span class='op'>)</span></span></code></pre>
+</div>
+<pre><code>
+Call:
+lm(formula = `Hillary Clinton` ~ prop_Hillary, data = join_ads)
+
+Coefficients:
+ (Intercept)  prop_Hillary  
+      0.7162       -0.2994  </code></pre>
+</div>
+<p>Positive correlation between increase of Hillary campaign ads and election results.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <!--radix_placeholder_article_footer-->
 <!--/radix_placeholder_article_footer-->
 </div>

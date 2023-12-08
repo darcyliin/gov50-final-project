@@ -138,15 +138,20 @@ modelsummary::modelsummary(join_lm,
                            gof_map = c("nobs", "r.squared", "adj.r.squared"))
 ```
 
-## Conclusion
 RESULT SUMMARY: 
 In the scatterplot, we can see that as Hillary Clinton's proportion of campaign ads increased, her share of the vote actually decreased. According to the line of best fit model, the intercept is 79.88. That means that when Clinton ads make up 0% of the campaign ads, she has 77.88% of the vote for that district. The slope is -0.405. That is, for every increase in 1 percentage point of the campaign ads that Clinton's ads make up, her share of the vote decreases by 0.405 percentage points. 
 
 Based on this study, we find that increasing candidate's ads make up of campaign ads are actually correlated with a decrease in share of election votes. 
 
+The survey is not causal. It was an observational study, not a randomized experimental design. Additionally, share of campaign ads and election votes might be related. That is, a district with negative pre-existing notions of Hillary Clinton may be targeted with a greater percentage of ads in order to improve that perception. 
+
+It is also not statistically significant. The p-value for the slope is 0.102. As this p-value is greater than the standard alpha value of 0.05, we fail to reject the null hypothesis that increasing percentage of campaign ads increase percentage of election votes. 
+
+## Conclusion
+
+My original hypothesis that increasing share of election ads would increase share of election votes was incorrect. I do not find support for my hypothesis. 
+
 LIMITATIONS / IMPROVEMENT:
 One limitation of this study is that the 2016 presidential election was already extremely contentious. As such, it may not be the best study for the efficacy of campaign ads. A better study subject might be an election that is not as polarized/sensationalized and a lower-scale one (such as gubernatorial or congressional, although these seats can also be just as drama-ridden as presidential). 
 
 Another limitation of this study was that we solely looked at the election results for the impact. A better study would have assessed continuously throughout the campaign how people's perceptions of the election may have changed with changes in share of campaign ads. 
-
-Another limitation is that my study may not adequately address the fact that a district with negative pre-existing notions of Hillary Clinton may be targeted with a greater percentage of ads in order to improve that perception. The improvement suggested in the previous paragraph may help account for that. 

@@ -137,6 +137,8 @@ modelsummary::modelsummary(join_lm,
                                          "p = {p.value}"),
                            gof_map = c("nobs", "r.squared", "adj.r.squared"))
 ```
+
+## Conclusion
 RESULT SUMMARY: 
 In the scatterplot, we can see that as Hillary Clinton's proportion of campaign ads increased, her share of the vote actually decreased. According to the line of best fit model, the intercept is 79.88. That means that when Clinton ads make up 0% of the campaign ads, she has 77.88% of the vote for that district. The slope is -0.405. That is, for every increase in 1 percentage point of the campaign ads that Clinton's ads make up, her share of the vote decreases by 0.405 percentage points. 
 

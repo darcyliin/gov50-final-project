@@ -93,7 +93,7 @@ gov50ads |>
   geom_col() + 
   labs(
     title = "Proportion of Pro-Campaign Ads Run from Oct 2015 - Dec 2016",
-    y = "Proportion",
+    y = "Proportion of Campaign Ads",
     x = "Candidate",
     caption = "Source = Political TV Ad Archive")
 ```

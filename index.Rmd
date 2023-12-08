@@ -7,54 +7,33 @@ output:
     self_contained: false
 ---
 
-##Proposal 
-Does increasing campaign ads increase election results? In this study, I plan to examine the extent to which campaign ads can predict the 2016 election outcome. I hypothesize that, in general, an increase in campaign ads will be a strong predictor for how well a candidate does in that area.
+## Introduction
+Does increasing campaign ads increase votes? In this study, I plan to examine the extent to which campaign ads can predict the 2016 election outcome. I will do so by comparing the proportion of campaign ads that belong to a politician and the proportion of the vote that they received in the 2016 presidential election for that district. 
 
-My sample is composed of two sources. The first source is pulled from Political TV Ad Archive and is comprised of campaign ads from the primary period through the 2016 election in regions across the United States. The second source is final election results compiled from various Green Pages for the corresponding districts. The data set is sorted to only include pro-presidential campaign. 
+I hypothesize that, in general, an increase in campaign ads will be a strong predictor for how well a candidate does in that area.
 
-The explanatory variable is proportion of Hillary Clinton campaign ads in a region. The outcome variable is the proportion of the vote that Hillary Clinton won. 
+This question is important because politicians invest a lot of money into their campaign ads in order to increase their voter share. According to NPR, in 2016, presidential candidates were predicted to spend $4.4 billion (source: https://www.npr.org/sections/itsallpolitics/2015/08/19/432759311/2016-campaign-tv-ad-spending). However, do these campaign ads actually affect their election results? 
+
+## Data Section
+My sample is composed of two sources. 
+
+The explanatory variable is proportion of Hillary Clinton campaign ads in a region. The outcome variable is the proportion of the vote that Hillary Clinton won. The explanatory variable was captured by the Political TV Ad Archive. It is comprised of campaign ads from the primary period through the 2016 election in regions across the United States. I sorted the data set to only include pro-presidential campaign ads. 
+
+The dependent variable is the final election votes from the regions that the ad campaigns ran in. The final election votes were compiled from various Green Pages for the relevant districts. 
 
 If I observe a strong correlation between campaign ads and election results, I will have support for my hypothesis. 
 
-##Final Milestone 3 
+My study is cross-sectional—observing the effect of voting after exposing to TV ads. It is a census -- taking all the campaign ads from a district and all the votes from that district into consideration. 
 
 ```{r}
 library(tidyverse)
 library(dplyr)
 ```
 
+
 ```{r}
 gov50ads <- read_csv("2016ads.csv")
-View(gov50ads)
-
-presidential <- read_csv("gov50presidential.csv")
-View(presidential)
-
-presidential <- presidential |> 
-  rename("state" = "...1")
-```
-
-```{r}
-gov50ads |> 
-  filter(message == "pro") |>
-  group_by(candidates) |>
-  summarize(n = n()) |>
-  mutate(prop = n / sum(n)) |>
-  drop_na() |>
-  slice_max(n, n = 6) |>
-  ggplot(mapping = aes(x = candidates,
-                       y = prop)) + 
-  geom_col() + 
-  labs(
-    title = "Proportion of Pro-Campaign Ads Run from Oct 2015 - Dec 2016",
-    y = "Proportion",
-    x = "Candidate")
-   
-```
-
-##Final Milestone 4
-```{r}
-loc_govads <- gov50ads |>
+gov50ads <- gov50ads |>
   filter(location != "Greenville-Spartanburg, SC/Asheville-Anderson, NC",
          location != "Washington, DC/Hagerstown, MD",
          location != "Boston, MA/Manchester, NH") |>
@@ -78,30 +57,94 @@ loc_govads <- gov50ads |>
          message == "pro")
 ```
 
+Proportion of Candidates' Pro-Campaign Ads Run from Oct 2015 - Dec 2016 
 ```{r}
-join_ads <- loc_govads |> 
+gov50ads |> 
+  group_by(candidates) |>
+  summarize(n = n()) |>
+  mutate(prop = n / sum(n)) |>
+  drop_na() |>
+  slice_max(n, n = 6) |>
+  ggplot(mapping = aes(x = candidates,
+                       y = prop)) + 
+  geom_col() + 
+  labs(
+    title = "Proportion of Pro-Campaign Ads Run from Oct 2015 - Dec 2016",
+    y = "Proportion",
+    x = "Candidate")
+```
+Proportion of Hillary Clinton Ads in Different Districts
+
+```{r}
+gov50ads <- gov50ads |> 
+  mutate(Hillad = case_when(candidates == "Hillary Clinton" ~ "1",
+                            candidates != "Hillary Clinton" ~ "0"),
+         Hillad = as.integer(Hillad))
+
+```
+
+```{r}
+gov50ads |>
+  group_by(state) |>
+  summarize(mean_Hillad = mean((Hillad), na.rm = TRUE)) |>
+  ggplot(mapping = aes(x = state, y = mean_Hillad)) +
+  geom_col() + 
+  labs(title = "Proportion of Campaign Ads Belonging to Hillary Clinton Across States",
+       subtitle = "From October 2015 - December 2016",
+       y = "Proportion of Ads Belonging to Clinton",
+       x = "State",
+       caption = "Source = Political TV Ad Archive")
+```
+
+## Results 
+
+```{r}
+presidential <- read_csv("gov50presidential.csv")
+presidential <- presidential |> 
+  rename("state" = "...1") |>
+  group_by(state) |>
+  summarize(perc_Hillaryvote = mean(`Hillary Clinton`))
+```
+
+```{r}
+join_ads <- gov50ads |> 
   group_by(state) |> 
-  mutate(Hillary = if_else(candidates == "Hillary Clinton", "1", "0"),
-         Hillary = as.numeric(Hillary)) |> 
-  summarize(prop_Hillary = mean(Hillary)) |> 
-  left_join(presidential, by = "state") |>
-  select(!c(...2,...3,Trump,Other)) |>
-  mutate(`Hillary Clinton` = `Hillary Clinton`/100)
+  summarize(perc_Hillaryad = mean(Hillad)) |>
+  left_join(presidential, by = "state") |> 
+  mutate(`Hillary Clinton` = perc_Hillaryad * 100) 
 ```
 
 ```{r}
 join_ads |> 
-  ggplot(mapping = aes(x = prop_Hillary,
-                       y = `Hillary Clinton`)) + 
+  ggplot(mapping = aes(x = `Hillary Clinton`,
+                       y = perc_Hillaryvote)) + 
   geom_point(alpha = 0.5) + 
   geom_smooth(method = "lm") + 
-  labs(title = "Hillary Clinton 2016 Presidential Campaign Videos vs Election Results",
-       y = "Clinton Proportion of 2016 Presidential Election",
-       x = "Clinton Proportion of Campaign Videos", 
+  labs(title = "Hillary Clinton 2016 Presidential Campaign Ads vs Election Results",
+       y = "Clinton Percentage of 2016 Presidential Election",
+       x = "Clinton Percentage of Campaign Ads", 
        subtitle = "Campaign Ad Info from Political TV Ad Archive, Election Results Compiled from the Green Pages")
 ```
+
 ```{r}
-join_ads |>
-  lm(formula = `Hillary Clinton` ~ prop_Hillary)
+join_lm <- join_ads |>
+  lm(formula = `perc_Hillaryvote` ~ `Hillary Clinton`) 
 ```
-Positive correlation between increase of Hillary campaign ads and election results. 
+
+```{r}
+modelsummary::modelsummary(join_lm,
+                           statistic = c("s.e. = {std.error}",
+                                         "p = {p.value}"),
+                           gof_map = c("nobs", "r.squared", "adj.r.squared"))
+```
+RESULT SUMMARY: 
+In the scatterplot, we can see that as Hillary Clinton's proportion of campaign ads increased, her share of the vote actually decreased. According to the line of best fit model, the intercept is 79.88. That means that when Clinton ads make up 0% of the percentage of campaign ads, she has 77.88% of the vote for that district. The slope is -0.405. That is, for every increase in 1 percentage point of the campaign ads that Clinton's ads make up, her share of the vote decreases by 0.405 percentage points. 
+
+Based on this study, we find that increasing candidate's ads make up of campaign ads are actually correlated with a decrease in share of election votes. 
+
+LIMITATIONS / IMPROVEMENT:
+One limitation of this study is that the 2016 presidential election was already extremely contentious. As such, it may not be the best study for the efficacy of campaign ads. A better study subject might be an election that is not as polarized/sensationalized and a lower-scale one (such as gubernatorial or congressional, although these seats can also be just as drama-ridden as presidential). 
+
+Another limitation of this study was that we solely looked at the election results for the impact. A better study would have assessed continuously throughout the campaign how people's perceptions of the election may have changed with changes in share of campaign ads. 
+
+Another limitation is that my study may not adequately address the fact that a district with negative pre-existing notions of Hillary Clinton may be targeted with a greater percentage of ads in order to improve that perception. The improvement suggested in the previous paragraph may help account for that. 

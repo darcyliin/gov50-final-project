@@ -115,7 +115,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   <!--/radix_placeholder_rmarkdown_metadata-->
   
   <script type="text/json" id="radix-resource-manifest">
-  {"type":"character","attributes":{},"value":["2016ads.csv","gov50presidential.csv","index_files/anchor-4.2.2/anchor.min.js","index_files/bowser-1.9.3/bowser.min.js","index_files/distill-2.2.21/template.v2.js","index_files/figure-html5/unnamed-chunk-3-1.png","index_files/figure-html5/unnamed-chunk-6-1.png","index_files/header-attrs-2.17/header-attrs.js","index_files/header-attrs-2.25/header-attrs.js","index_files/jquery-3.6.0/jquery-3.6.0.js","index_files/jquery-3.6.0/jquery-3.6.0.min.js","index_files/jquery-3.6.0/jquery-3.6.0.min.map","index_files/popper-2.6.0/popper.min.js","index_files/tippy-6.2.7/tippy-bundle.umd.min.js","index_files/tippy-6.2.7/tippy-light-border.css","index_files/tippy-6.2.7/tippy.css","index_files/tippy-6.2.7/tippy.umd.min.js","index_files/webcomponents-2.0.0/webcomponents.js"]}
+  {"type":"character","attributes":{},"value":["2016ads.csv","gov50presidential.csv","index_files/anchor-4.2.2/anchor.min.js","index_files/bowser-1.9.3/bowser.min.js","index_files/distill-2.2.21/template.v2.js","index_files/figure-html5/unnamed-chunk-3-1.png","index_files/figure-html5/unnamed-chunk-5-1.png","index_files/figure-html5/unnamed-chunk-6-1.png","index_files/figure-html5/unnamed-chunk-8-1.png","index_files/header-attrs-2.17/header-attrs.js","index_files/header-attrs-2.25/header-attrs.js","index_files/jquery-3.6.0/jquery-3.6.0.js","index_files/jquery-3.6.0/jquery-3.6.0.min.js","index_files/jquery-3.6.0/jquery-3.6.0.min.map","index_files/popper-2.6.0/popper.min.js","index_files/tippy-6.2.7/tippy-bundle.umd.min.js","index_files/tippy-6.2.7/tippy-light-border.css","index_files/tippy-6.2.7/tippy.css","index_files/tippy-6.2.7/tippy.umd.min.js","index_files/webcomponents-2.0.0/webcomponents.js"]}
   </script>
   <!--radix_placeholder_navigation_in_header-->
   <!--/radix_placeholder_navigation_in_header-->
@@ -1498,6 +1498,8 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 
   <!--/radix_placeholder_distill-->
   <script src="index_files/header-attrs-2.25/header-attrs.js"></script>
+  <script src="index_files/kePrint-0.0.1/kePrint.js"></script>
+  <link href="index_files/lightable-0.0.1/lightable.css" rel="stylesheet" />
   <script src="index_files/jquery-3.6.0/jquery-3.6.0.min.js"></script>
   <script src="index_files/popper-2.6.0/popper.min.js"></script>
   <link href="index_files/tippy-6.2.7/tippy.css" rel="stylesheet" />
@@ -1543,12 +1545,16 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 </div>
 
 <div class="d-article">
-<p>##Proposal
-Does increasing campaign ads increase election results? In this study, I plan to examine the extent to which campaign ads can predict the 2016 election outcome. I hypothesize that, in general, an increase in campaign ads will be a strong predictor for how well a candidate does in that area.</p>
-<p>My sample is composed of two sources. The first source is pulled from Political TV Ad Archive and is comprised of campaign ads from the primary period through the 2016 election in regions across the United States. The second source is final election results compiled from various Green Pages for the corresponding districts. The data set is sorted to only include pro-presidential campaign.</p>
-<p>The explanatory variable is proportion of Hillary Clinton campaign ads in a region. The outcome variable is the proportion of the vote that Hillary Clinton won.</p>
+<h2 id="introduction">Introduction</h2>
+<p>Does increasing campaign ads increase votes? In this study, I plan to examine the extent to which campaign ads can predict the 2016 election outcome. I will do so by comparing the proportion of campaign ads that belong to a politician and the proportion of the vote that they received in the 2016 presidential election for that district.</p>
+<p>I hypothesize that, in general, an increase in campaign ads will be a strong predictor for how well a candidate does in that area.</p>
+<p>This question is important because politicians invest a lot of money into their campaign ads in order to increase their voter share. According to NPR, in 2016, presidential candidates were predicted to spend $4.4 billion (source: <a href="https://www.npr.org/sections/itsallpolitics/2015/08/19/432759311/2016-campaign-tv-ad-spending" class="uri">https://www.npr.org/sections/itsallpolitics/2015/08/19/432759311/2016-campaign-tv-ad-spending</a>). However, do these campaign ads actually affect their election results?</p>
+<h2 id="data-section">Data Section</h2>
+<p>My sample is composed of two sources.</p>
+<p>The explanatory variable is proportion of Hillary Clinton campaign ads in a region. The outcome variable is the proportion of the vote that Hillary Clinton won. The explanatory variable was captured by the Political TV Ad Archive. It is comprised of campaign ads from the primary period through the 2016 election in regions across the United States. I sorted the data set to only include pro-presidential campaign ads.</p>
+<p>The dependent variable is the final election votes from the regions that the ad campaigns ran in. The final election votes were compiled from various Green Pages for the relevant districts.</p>
 <p>If I observe a strong correlation between campaign ads and election results, I will have support for my hypothesis.</p>
-<p>##Final Milestone 3</p>
+<p>My study is cross-sectional—observing the effect of voting after exposing to TV ads. It is a census – taking all the campaign ads from a district and all the votes from that district into consideration.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://tidyverse.tidyverse.org'>tidyverse</a></span><span class='op'>)</span></span>
@@ -1558,38 +1564,7 @@ Does increasing campaign ads increase election results? In this study, I plan to
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>gov50ads</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://readr.tidyverse.org/reference/read_delim.html'>read_csv</a></span><span class='op'>(</span><span class='st'>"2016ads.csv"</span><span class='op'>)</span></span>
-<span><span class='fu'><a href='https://rdrr.io/r/utils/View.html'>View</a></span><span class='op'>(</span><span class='va'>gov50ads</span><span class='op'>)</span></span>
-<span></span>
-<span><span class='va'>presidential</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://readr.tidyverse.org/reference/read_delim.html'>read_csv</a></span><span class='op'>(</span><span class='st'>"gov50presidential.csv"</span><span class='op'>)</span></span>
-<span><span class='fu'><a href='https://rdrr.io/r/utils/View.html'>View</a></span><span class='op'>(</span><span class='va'>presidential</span><span class='op'>)</span></span>
-<span></span>
-<span><span class='va'>presidential</span> <span class='op'>&lt;-</span> <span class='va'>presidential</span> <span class='op'>|&gt;</span> </span>
-<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/rename.html'>rename</a></span><span class='op'>(</span><span class='st'>"state"</span> <span class='op'>=</span> <span class='st'>"...1"</span><span class='op'>)</span></span></code></pre>
-</div>
-</div>
-<div class="layout-chunk" data-layout="l-body">
-<div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>gov50ads</span> <span class='op'>|&gt;</span> </span>
-<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>message</span> <span class='op'>==</span> <span class='st'>"pro"</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
-<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span><span class='op'>(</span><span class='va'>candidates</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
-<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/summarise.html'>summarize</a></span><span class='op'>(</span>n <span class='op'>=</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/context.html'>n</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
-<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>prop <span class='op'>=</span> <span class='va'>n</span> <span class='op'>/</span> <span class='fu'><a href='https://rdrr.io/r/base/sum.html'>sum</a></span><span class='op'>(</span><span class='va'>n</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
-<span>  <span class='fu'><a href='https://tidyr.tidyverse.org/reference/drop_na.html'>drop_na</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
-<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/slice.html'>slice_max</a></span><span class='op'>(</span><span class='va'>n</span>, n <span class='op'>=</span> <span class='fl'>6</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
-<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span><span class='op'>(</span>mapping <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>candidates</span>,</span>
-<span>                       y <span class='op'>=</span> <span class='va'>prop</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span> </span>
-<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_bar.html'>geom_col</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span> </span>
-<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>labs</a></span><span class='op'>(</span></span>
-<span>    title <span class='op'>=</span> <span class='st'>"Proportion of Pro-Campaign Ads Run from Oct 2015 - Dec 2016"</span>,</span>
-<span>    y <span class='op'>=</span> <span class='st'>"Proportion"</span>,</span>
-<span>    x <span class='op'>=</span> <span class='st'>"Candidate"</span><span class='op'>)</span></span></code></pre>
-</div>
-<p><img src="index_files/figure-html5/unnamed-chunk-3-1.png" width="624" /></p>
-</div>
-##Final Milestone 4
-<div class="layout-chunk" data-layout="l-body">
-<div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>loc_govads</span> <span class='op'>&lt;-</span> <span class='va'>gov50ads</span> <span class='op'>|&gt;</span></span>
+<span><span class='va'>gov50ads</span> <span class='op'>&lt;-</span> <span class='va'>gov50ads</span> <span class='op'>|&gt;</span></span>
 <span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>location</span> <span class='op'>!=</span> <span class='st'>"Greenville-Spartanburg, SC/Asheville-Anderson, NC"</span>,</span>
 <span>         <span class='va'>location</span> <span class='op'>!=</span> <span class='st'>"Washington, DC/Hagerstown, MD"</span>,</span>
 <span>         <span class='va'>location</span> <span class='op'>!=</span> <span class='st'>"Boston, MA/Manchester, NH"</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
@@ -1613,47 +1588,185 @@ Does increasing campaign ads increase election results? In this study, I plan to
 <span>         <span class='va'>message</span> <span class='op'>==</span> <span class='st'>"pro"</span><span class='op'>)</span></span></code></pre>
 </div>
 </div>
+Proportion of Candidates’ Pro-Campaign Ads Run from Oct 2015 - Dec 2016
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>join_ads</span> <span class='op'>&lt;-</span> <span class='va'>loc_govads</span> <span class='op'>|&gt;</span> </span>
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>gov50ads</span> <span class='op'>|&gt;</span> </span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span><span class='op'>(</span><span class='va'>candidates</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/summarise.html'>summarize</a></span><span class='op'>(</span>n <span class='op'>=</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/context.html'>n</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>prop <span class='op'>=</span> <span class='va'>n</span> <span class='op'>/</span> <span class='fu'><a href='https://rdrr.io/r/base/sum.html'>sum</a></span><span class='op'>(</span><span class='va'>n</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'><a href='https://tidyr.tidyverse.org/reference/drop_na.html'>drop_na</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/slice.html'>slice_max</a></span><span class='op'>(</span><span class='va'>n</span>, n <span class='op'>=</span> <span class='fl'>6</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span><span class='op'>(</span>mapping <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>candidates</span>,</span>
+<span>                       y <span class='op'>=</span> <span class='va'>prop</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span> </span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_bar.html'>geom_col</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span> </span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>labs</a></span><span class='op'>(</span></span>
+<span>    title <span class='op'>=</span> <span class='st'>"Proportion of Pro-Campaign Ads Run from Oct 2015 - Dec 2016"</span>,</span>
+<span>    y <span class='op'>=</span> <span class='st'>"Proportion"</span>,</span>
+<span>    x <span class='op'>=</span> <span class='st'>"Candidate"</span><span class='op'>)</span></span></code></pre>
+</div>
+<p><img src="index_files/figure-html5/unnamed-chunk-3-1.png" width="624" /></p>
+</div>
+<p>Proportion of Hillary Clinton Ads in Different Districts</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>gov50ads</span> <span class='op'>&lt;-</span> <span class='va'>gov50ads</span> <span class='op'>|&gt;</span> </span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>Hillad <span class='op'>=</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/case_when.html'>case_when</a></span><span class='op'>(</span><span class='va'>candidates</span> <span class='op'>==</span> <span class='st'>"Hillary Clinton"</span> <span class='op'>~</span> <span class='st'>"1"</span>,</span>
+<span>                            <span class='va'>candidates</span> <span class='op'>!=</span> <span class='st'>"Hillary Clinton"</span> <span class='op'>~</span> <span class='st'>"0"</span><span class='op'>)</span>,</span>
+<span>         Hillad <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/integer.html'>as.integer</a></span><span class='op'>(</span><span class='va'>Hillad</span><span class='op'>)</span><span class='op'>)</span></span></code></pre>
+</div>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>gov50ads</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span><span class='op'>(</span><span class='va'>state</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/summarise.html'>summarize</a></span><span class='op'>(</span>mean_Hillad <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span><span class='op'>(</span><span class='op'>(</span><span class='va'>Hillad</span><span class='op'>)</span>, na.rm <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span><span class='op'>(</span>mapping <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>state</span>, y <span class='op'>=</span> <span class='va'>mean_Hillad</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_bar.html'>geom_col</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span> </span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>labs</a></span><span class='op'>(</span>title <span class='op'>=</span> <span class='st'>"Proportion of Campaign Ads Belonging to Hillary Clinton Across States"</span>,</span>
+<span>       subtitle <span class='op'>=</span> <span class='st'>"From October 2015 - December 2016"</span>,</span>
+<span>       y <span class='op'>=</span> <span class='st'>"Proportion of Ads Belonging to Clinton"</span>,</span>
+<span>       x <span class='op'>=</span> <span class='st'>"State"</span>,</span>
+<span>       caption <span class='op'>=</span> <span class='st'>"Source = Political TV Ad Archive"</span><span class='op'>)</span></span></code></pre>
+</div>
+<p><img src="index_files/figure-html5/unnamed-chunk-5-1.png" width="624" /></p>
+</div>
+<h2 id="results">Results</h2>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>presidential</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://readr.tidyverse.org/reference/read_delim.html'>read_csv</a></span><span class='op'>(</span><span class='st'>"gov50presidential.csv"</span><span class='op'>)</span></span>
+<span><span class='va'>presidential</span> <span class='op'>&lt;-</span> <span class='va'>presidential</span> <span class='op'>|&gt;</span> </span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/rename.html'>rename</a></span><span class='op'>(</span><span class='st'>"state"</span> <span class='op'>=</span> <span class='st'>"...1"</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span><span class='op'>(</span><span class='va'>state</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/summarise.html'>summarize</a></span><span class='op'>(</span>perc_Hillaryvote <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span><span class='op'>(</span><span class='va'>`Hillary Clinton`</span><span class='op'>)</span><span class='op'>)</span></span></code></pre>
+</div>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>join_ads</span> <span class='op'>&lt;-</span> <span class='va'>gov50ads</span> <span class='op'>|&gt;</span> </span>
 <span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span><span class='op'>(</span><span class='va'>state</span><span class='op'>)</span> <span class='op'>|&gt;</span> </span>
-<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>Hillary <span class='op'>=</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/if_else.html'>if_else</a></span><span class='op'>(</span><span class='va'>candidates</span> <span class='op'>==</span> <span class='st'>"Hillary Clinton"</span>, <span class='st'>"1"</span>, <span class='st'>"0"</span><span class='op'>)</span>,</span>
-<span>         Hillary <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/numeric.html'>as.numeric</a></span><span class='op'>(</span><span class='va'>Hillary</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>|&gt;</span> </span>
-<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/summarise.html'>summarize</a></span><span class='op'>(</span>prop_Hillary <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span><span class='op'>(</span><span class='va'>Hillary</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>|&gt;</span> </span>
-<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate-joins.html'>left_join</a></span><span class='op'>(</span><span class='va'>presidential</span>, by <span class='op'>=</span> <span class='st'>"state"</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
-<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='op'>!</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='va'>...2</span>,<span class='va'>...3</span>,<span class='va'>Trump</span>,<span class='va'>Other</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
-<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>`Hillary Clinton` <span class='op'>=</span> <span class='va'>`Hillary Clinton`</span><span class='op'>/</span><span class='fl'>100</span><span class='op'>)</span></span></code></pre>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/summarise.html'>summarize</a></span><span class='op'>(</span>perc_Hillaryad <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span><span class='op'>(</span><span class='va'>Hillad</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate-joins.html'>left_join</a></span><span class='op'>(</span><span class='va'>presidential</span>, by <span class='op'>=</span> <span class='st'>"state"</span><span class='op'>)</span> <span class='op'>|&gt;</span> </span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>`Hillary Clinton` <span class='op'>=</span> <span class='va'>perc_Hillaryad</span> <span class='op'>*</span> <span class='fl'>100</span><span class='op'>)</span> </span></code></pre>
 </div>
 </div>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>join_ads</span> <span class='op'>|&gt;</span> </span>
-<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span><span class='op'>(</span>mapping <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>prop_Hillary</span>,</span>
-<span>                       y <span class='op'>=</span> <span class='va'>`Hillary Clinton`</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span> </span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span><span class='op'>(</span>mapping <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>`Hillary Clinton`</span>,</span>
+<span>                       y <span class='op'>=</span> <span class='va'>perc_Hillaryvote</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span> </span>
 <span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_point.html'>geom_point</a></span><span class='op'>(</span>alpha <span class='op'>=</span> <span class='fl'>0.5</span><span class='op'>)</span> <span class='op'>+</span> </span>
 <span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_smooth.html'>geom_smooth</a></span><span class='op'>(</span>method <span class='op'>=</span> <span class='st'>"lm"</span><span class='op'>)</span> <span class='op'>+</span> </span>
-<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>labs</a></span><span class='op'>(</span>title <span class='op'>=</span> <span class='st'>"Hillary Clinton 2016 Presidential Campaign Videos vs Election Results"</span>,</span>
-<span>       y <span class='op'>=</span> <span class='st'>"Clinton Proportion of 2016 Presidential Election"</span>,</span>
-<span>       x <span class='op'>=</span> <span class='st'>"Clinton Proportion of Campaign Videos"</span>, </span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>labs</a></span><span class='op'>(</span>title <span class='op'>=</span> <span class='st'>"Hillary Clinton 2016 Presidential Campaign Ads vs Election Results"</span>,</span>
+<span>       y <span class='op'>=</span> <span class='st'>"Clinton Percentage of 2016 Presidential Election"</span>,</span>
+<span>       x <span class='op'>=</span> <span class='st'>"Clinton Percentage of Campaign Ads"</span>, </span>
 <span>       subtitle <span class='op'>=</span> <span class='st'>"Campaign Ad Info from Political TV Ad Archive, Election Results Compiled from the Green Pages"</span><span class='op'>)</span></span></code></pre>
 </div>
-<p><img src="index_files/figure-html5/unnamed-chunk-6-1.png" width="624" /></p>
+<p><img src="index_files/figure-html5/unnamed-chunk-8-1.png" width="624" /></p>
 </div>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>join_ads</span> <span class='op'>|&gt;</span></span>
-<span>  <span class='fu'><a href='https://rdrr.io/r/stats/lm.html'>lm</a></span><span class='op'>(</span>formula <span class='op'>=</span> <span class='va'>`Hillary Clinton`</span> <span class='op'>~</span> <span class='va'>prop_Hillary</span><span class='op'>)</span></span></code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>join_lm</span> <span class='op'>&lt;-</span> <span class='va'>join_ads</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'><a href='https://rdrr.io/r/stats/lm.html'>lm</a></span><span class='op'>(</span>formula <span class='op'>=</span> <span class='va'>`perc_Hillaryvote`</span> <span class='op'>~</span> <span class='va'>`Hillary Clinton`</span><span class='op'>)</span> </span></code></pre>
 </div>
-<pre><code>
-Call:
-lm(formula = `Hillary Clinton` ~ prop_Hillary, data = join_ads)
-
-Coefficients:
- (Intercept)  prop_Hillary  
-      0.7162       -0.2994  </code></pre>
 </div>
-<p>Positive correlation between increase of Hillary campaign ads and election results.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'>modelsummary</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/modelsummary/man/modelsummary.html'>modelsummary</a></span><span class='op'>(</span><span class='va'>join_lm</span>,</span>
+<span>                           statistic <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"s.e. = {std.error}"</span>,</span>
+<span>                                         <span class='st'>"p = {p.value}"</span><span class='op'>)</span>,</span>
+<span>                           gof_map <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"nobs"</span>, <span class='st'>"r.squared"</span>, <span class='st'>"adj.r.squared"</span><span class='op'>)</span><span class='op'>)</span></span></code></pre>
+</div>
+<table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:center;">
+ (1)
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+(Intercept)
+</td>
+<td style="text-align:center;">
+77.888
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+</td>
+<td style="text-align:center;">
+s.e. = 12.004
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+</td>
+<td style="text-align:center;">
+p = &lt;0.001
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Hillary Clinton
+</td>
+<td style="text-align:center;">
+−0.405
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+</td>
+<td style="text-align:center;">
+s.e. = 0.228
+</td>
+</tr>
+<tr>
+<td style="text-align:left;box-shadow: 0px 1.5px">
+</td>
+<td style="text-align:center;box-shadow: 0px 1.5px">
+p = 0.102
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Num.Obs.
+</td>
+<td style="text-align:center;">
+13
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+R2
+</td>
+<td style="text-align:center;">
+0.224
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+R2 Adj.
+</td>
+<td style="text-align:center;">
+0.153
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>RESULT SUMMARY:
+In the scatterplot, we can see that as Hillary Clinton’s proportion of campaign ads increased, her share of the vote actually decreased. According to the line of best fit model, the intercept is 79.88. That means that when Clinton ads make up 0% of the percentage of campaign ads, she has 77.88% of the vote for that district. The slope is -0.405. That is, for every increase in 1 percentage point of the campaign ads that Clinton’s ads make up, her share of the vote decreases by 0.405 percentage points.</p>
+<p>Based on this study, we find that increasing candidate’s ads make up of campaign ads are actually correlated with a decrease in share of election votes.</p>
+<p>LIMITATIONS / IMPROVEMENT:
+One limitation of this study is that the 2016 presidential election was already extremely contentious. As such, it may not be the best study for the efficacy of campaign ads. A better study subject might be an election that is not as polarized/sensationalized and a lower-scale one (such as gubernatorial or congressional, although these seats can also be just as drama-ridden as presidential).</p>
+<p>Another limitation of this study was that we solely looked at the election results for the impact. A better study would have assessed continuously throughout the campaign how people’s perceptions of the election may have changed with changes in share of campaign ads.</p>
+<p>Another limitation is that my study may not adequately address the fact that a district with negative pre-existing notions of Hillary Clinton may be targeted with a greater percentage of ads in order to improve that perception. The improvement suggested in the previous paragraph may help account for that.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <!--radix_placeholder_article_footer-->
 <!--/radix_placeholder_article_footer-->
 </div>

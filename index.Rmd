@@ -75,13 +75,15 @@ The Political TV Ad Archive data set is comprised of 375,350 ads between October
 
 The data set included ads from regions around the United States. Political TV Ad Archive stated that they selected these regions to create a historically, geographically, and politically diverse combination. For simplicity sake, I renamed the regions to their encompassing state (e.g., Tampa-St.Petersburg, Florida ads were renamed "FL"). I filtered out data that included multiple states (e.g., Washington, DC/Hagerstown, MD). 
 
-After filtering, there were 57,800 ads in the data set.
+After filtering, there were 57,800 ads in the data set. 
+
+To assess the proportion of ads that Hillary makes up in the data set, I used str_detect() to create a new binary variable called `Hillad` for whenever Hillary Clinton appeared as a featured candidate in the advertisement. This is because some advertisements endorsed several candidates. 
 
 #### Election Result Data Set
 As mentioned earlier, the election results were comprised from the Green Pages. I only included election results from the districts mentioned in the Political TV Ad Archive Data Set (e.g., I did not take all the election results from South Carolina, only from the county that included Columbia). 
 
 ### Plots Summarizing Dependent Variable
-```{r, echo=FALSE}
+```{r, echo=FALSE, fig.width = 7, fig.height = 5}
 gov50ads |> 
   group_by(candidates) |>
   summarize(n = n()) |>
@@ -95,10 +97,12 @@ gov50ads |>
     title = "Proportion of Pro-Campaign Ads Run from Oct 2015 - Dec 2016",
     y = "Proportion of Campaign Ads",
     x = "Candidate",
-    caption = "Source = Political TV Ad Archive")
+    caption = "Source = Political TV Ad Archive",
+    subtitle = "*Note that only the top 6 most featured candidates are included in this distribution") + 
+  theme_light()
 ```
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, fig.width = 7, fig.height = 5}
 gov50ads |>
   group_by(state) |>
   summarize(mean_Hillad = mean((Hillad), na.rm = TRUE)) |>
@@ -108,7 +112,8 @@ gov50ads |>
        subtitle = "From October 2015 - December 2016",
        y = "Proportion of Ads Belonging to Clinton",
        x = "State",
-       caption = "Source = Political TV Ad Archive")
+       caption = "Source = Political TV Ad Archive") +
+  theme_light()
 ```
 
 ## Results 
@@ -129,16 +134,17 @@ join_ads <- gov50ads |>
   mutate(`Hillary Clinton` = perc_Hillaryad * 100) 
 ```
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, fig.width = 7, fig.height = 5}
 join_ads |> 
   ggplot(mapping = aes(x = `Hillary Clinton`,
                        y = perc_Hillaryvote)) + 
-  geom_point(alpha = 0.5) + 
-  geom_smooth(method = "lm") + 
+  geom_point(alpha = 0.5, color = "dodgerblue") + 
+  geom_smooth(method = "lm", color = "dodgerblue") + 
   labs(title = "Hillary Clinton 2016 Presidential Campaign Ads vs Election Results",
        y = "Clinton Percentage of 2016 Presidential Election",
        x = "Clinton Percentage of Campaign Ads", 
-       caption = "Source: Political TV Ad Archive and Green Pages")
+       caption = "Source: Political TV Ad Archive and Green Pages") +
+  theme_light()
 ```
 
 ```{r, echo=FALSE}
@@ -156,13 +162,13 @@ modelsummary::modelsummary(join_lm,
 
 ### RESULT SUMMARY: 
 
-In the scatter plot, we can see that as Hillary Clinton's proportion of campaign ads increased, her share of the vote actually decreased. According to the line of best fit model, the intercept is 79.88. That means that when Clinton ads make up 0% of the campaign ads, she has 77.88% of the vote for that district. The slope is -0.405. That is, for every increase in 1 percentage point of the campaign ads that Clinton's ads make up, her share of the vote decreases by 0.405 percentage points. 
+In the scatter plot, we can see that as Hillary Clinton's proportion of campaign ads increased, her share of the vote actually decreased. According to the line of best fit model, the intercept is 77.796. That means that when Clinton ads make up 0% of the campaign ads, she has 77.79% of the vote for that district. The slope is -0.403. That is, for every increase in 1 percentage point of the campaign ads that Clinton's ads make up, her share of the vote decreases by 0.403 percentage points. 
 
 Based on this study, we find that increasing candidate's ads make up of campaign ads are actually correlated with a decrease in share of election votes. 
 
 The survey is not causal. It was an observational study, not a randomized experimental design. Additionally, share of campaign ads and election votes might be related. That is, a district with negative pre-existing notions of Hillary Clinton may be targeted with a greater percentage of ads in order to improve that perception. 
 
-It is also not statistically significant. The p-value for the slope is 0.102. As this p-value is greater than the standard alpha value of 0.05, we fail to reject the null hypothesis that increasing percentage of campaign ads increase percentage of election votes. 
+It is also not statistically significant. The p-value for the slope is 0.105. As this p-value is greater than the standard alpha value of 0.05, we fail to reject the null hypothesis that increasing percentage of campaign ads increase percentage of election votes. 
 
 ## Conclusion
 

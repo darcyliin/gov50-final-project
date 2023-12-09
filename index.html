@@ -1572,14 +1572,15 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <p>The Political TV Ad Archive data set is comprised of 375,350 ads between October 2015 and December 2016. I filtered the ads to only include pro-presidential campaign ads.</p>
 <p>The data set included ads from regions around the United States. Political TV Ad Archive stated that they selected these regions to create a historically, geographically, and politically diverse combination. For simplicity sake, I renamed the regions to their encompassing state (e.g., Tampa-St.Petersburg, Florida ads were renamed “FL”). I filtered out data that included multiple states (e.g., Washington, DC/Hagerstown, MD).</p>
 <p>After filtering, there were 57,800 ads in the data set.</p>
+<p>To assess the proportion of ads that Hillary makes up in the data set, I used str_detect() to create a new binary variable called <code>Hillad</code> for whenever Hillary Clinton appeared as a featured candidate in the advertisement. This is because some advertisements endorsed several candidates.</p>
 <h4 id="election-result-data-set">Election Result Data Set</h4>
 <p>As mentioned earlier, the election results were comprised from the Green Pages. I only included election results from the districts mentioned in the Political TV Ad Archive Data Set (e.g., I did not take all the election results from South Carolina, only from the county that included Columbia).</p>
 <h3 id="plots-summarizing-dependent-variable">Plots Summarizing Dependent Variable</h3>
 <div class="layout-chunk" data-layout="l-body">
-<p><img src="index_files/figure-html5/unnamed-chunk-5-1.png" width="624" /></p>
+<p><img src="index_files/figure-html5/unnamed-chunk-5-1.png" width="672" /></p>
 </div>
 <div class="layout-chunk" data-layout="l-body">
-<p><img src="index_files/figure-html5/unnamed-chunk-6-1.png" width="624" /></p>
+<p><img src="index_files/figure-html5/unnamed-chunk-6-1.png" width="672" /></p>
 </div>
 <h2 id="results">Results</h2>
 <div class="layout-chunk" data-layout="l-body">
@@ -1589,7 +1590,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 
 </div>
 <div class="layout-chunk" data-layout="l-body">
-<p><img src="index_files/figure-html5/unnamed-chunk-9-1.png" width="624" /></p>
+<p><img src="index_files/figure-html5/unnamed-chunk-9-1.png" width="672" /></p>
 </div>
 <div class="layout-chunk" data-layout="l-body">
 
@@ -1681,10 +1682,10 @@ R2 Adj.
 </table>
 </div>
 <h3 id="result-summary">RESULT SUMMARY:</h3>
-<p>In the scatter plot, we can see that as Hillary Clinton’s proportion of campaign ads increased, her share of the vote actually decreased. According to the line of best fit model, the intercept is 79.88. That means that when Clinton ads make up 0% of the campaign ads, she has 77.88% of the vote for that district. The slope is -0.405. That is, for every increase in 1 percentage point of the campaign ads that Clinton’s ads make up, her share of the vote decreases by 0.405 percentage points.</p>
+<p>In the scatter plot, we can see that as Hillary Clinton’s proportion of campaign ads increased, her share of the vote actually decreased. According to the line of best fit model, the intercept is 77.796. That means that when Clinton ads make up 0% of the campaign ads, she has 77.79% of the vote for that district. The slope is -0.403. That is, for every increase in 1 percentage point of the campaign ads that Clinton’s ads make up, her share of the vote decreases by 0.403 percentage points.</p>
 <p>Based on this study, we find that increasing candidate’s ads make up of campaign ads are actually correlated with a decrease in share of election votes.</p>
 <p>The survey is not causal. It was an observational study, not a randomized experimental design. Additionally, share of campaign ads and election votes might be related. That is, a district with negative pre-existing notions of Hillary Clinton may be targeted with a greater percentage of ads in order to improve that perception.</p>
-<p>It is also not statistically significant. The p-value for the slope is 0.102. As this p-value is greater than the standard alpha value of 0.05, we fail to reject the null hypothesis that increasing percentage of campaign ads increase percentage of election votes.</p>
+<p>It is also not statistically significant. The p-value for the slope is 0.105. As this p-value is greater than the standard alpha value of 0.05, we fail to reject the null hypothesis that increasing percentage of campaign ads increase percentage of election votes.</p>
 <h2 id="conclusion">Conclusion</h2>
 <p>My original hypothesis that increasing share of election ads would increase share of election votes was incorrect. I do not find support for my hypothesis.</p>
 <h3 id="limitations-improvement">LIMITATIONS / IMPROVEMENT:</h3>

@@ -8,7 +8,7 @@ output:
 ---
 
 ## Introduction
-Does increasing campaign ads increase votes? In this study, I plan to examine the extent to which campaign ads can predict the 2016 election outcome. I will do so by comparing the proportion of campaign ads that belong to a politician and the proportion of the vote that they received in the 2016 presidential election for that district. 
+Does increasing campaign ads increase votes? In this study, I plan to examine the extent to which Hillary Clinton's campaign ads can predict her 2016 election outcome. I will do so by comparing the proportion of campaign ads that belong to her and the proportion of the vote that she received in the 2016 presidential election for that district. 
 
 I hypothesize that, in general, an increase in campaign ads will be a strong predictor for how well a candidate does in that area.
 
@@ -159,6 +159,7 @@ modelsummary::modelsummary(join_lm,
                            gof_map = c("nobs", "r.squared", "adj.r.squared"),
                            title = "Linear Regression of Hillary Clinton Share of Ads and Votes")
 ```
+
 
 ### RESULT SUMMARY: 
 
